@@ -7,7 +7,8 @@ class OnboardingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final OnboardingViewModel viewModel = Get.put(OnboardingViewModel());
+    // OnboardingViewModel vm = OnboardingViewModel();
+    OnboardingViewModel viewModel = Get.put(OnboardingViewModel());
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -18,7 +19,9 @@ class OnboardingView extends StatelessWidget {
             child: PageView.builder(
               controller: viewModel.pageController,
               itemCount: viewModel.data.length,
-              onPageChanged: viewModel.onPageChanged,
+              onPageChanged: (int index){
+                viewModel.onPageChanged(index);
+              },
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
