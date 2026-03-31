@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class OnboardingViewModel extends GetxController {
   final PageController pageController = PageController();
-  
+
   final RxInt currentIndex = 0.obs;
 
   final List<Map<String, String>> data = [
@@ -14,12 +14,12 @@ class OnboardingViewModel extends GetxController {
           "Get all your loved foods in one place, you just place the order we do the rest",
     },
     {
-      "image": "assets/onboarding/onboarding_1.png",
+      "image": "assets/onboarding/onboarding_2.png",
       "title": "Fast Delivery",
       "desc": "Fast delivery to your home, office and wherever you are",
     },
     {
-      "image": "assets/onboarding/onboarding_1.png",
+      "image": "assets/onboarding/onboarding_3.png",
       "title": "Easy Payment",
       "desc": "Pay with cash or online payment safely and easily",
     },

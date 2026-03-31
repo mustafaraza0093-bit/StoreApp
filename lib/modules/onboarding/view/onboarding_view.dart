@@ -10,6 +10,7 @@ class OnboardingView extends StatelessWidget {
     final OnboardingViewModel viewModel = Get.put(OnboardingViewModel());
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           // Slider View
