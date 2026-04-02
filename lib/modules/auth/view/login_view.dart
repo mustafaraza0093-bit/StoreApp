@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store_app/common/app_TextField.dart';
 import 'package:store_app/common/app_button.dart';
+import 'package:store_app/modules/auth/view/forgot_view.dart';
+import 'package:store_app/modules/auth/view/signup_view.dart';
 import 'package:store_app/modules/auth/viewmodel/login_viewmodel.dart';
 
 class LoginView extends StatelessWidget {
@@ -54,106 +56,112 @@ class LoginView extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    // for Email
-                    AppTextfield(lableText: "Email"),
-                    SizedBox(height: 20),
-                    // for password
-                    AppTextfield(
-                      lableText: "Password",
-                      textFieldType: AppTextFieldType.password,
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            viewModel.isRememberMe.value =
-                                !viewModel.isRememberMe.value;
-                          },
-                          child: Obx(
-                            () => Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                color: viewModel.isRememberMe.value
-                                    ? const Color(0xFFFF7622)
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // for Email
+                      AppTextfield(lableText: "Email"),
+                      SizedBox(height: 20),
+                      // for password
+                      AppTextfield(
+                        lableText: "Password",
+                        textFieldType: AppTextFieldType.password,
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              viewModel.isRememberMe.value =
+                                  !viewModel.isRememberMe.value;
+                            },
+                            child: Obx(
+                              () => Container(
+                                height: 20,
+                                width: 20,
+                                decoration: BoxDecoration(
                                   color: viewModel.isRememberMe.value
                                       ? const Color(0xFFFF7622)
-                                      : Colors.grey,
-                                  width: 1.5,
+                                      : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(
+                                    color: viewModel.isRememberMe.value
+                                        ? const Color(0xFFFF7622)
+                                        : Colors.grey,
+                                    width: 1.5,
+                                  ),
                                 ),
+                                child: viewModel.isRememberMe.value
+                                    ? Center(
+                                        child: Icon(
+                                          Icons.check,
+                                          size: 15,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    : null,
                               ),
-                              child: viewModel.isRememberMe.value
-                                  ? Center(
-                                      child: Icon(
-                                        Icons.check,
-                                        size: 15,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : null,
                             ),
                           ),
-                        ),
-                        SizedBox(width: 8),
-                        Text(
-                          "Remember me",
-                          style: TextStyle(color: Colors.grey, fontSize: 15),
-                        ),
-                        Spacer(),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Forgot Password?",
-                            style: TextStyle(
-                              color: const Color(0xFFFF7622),
-                              fontSize: 15,
+                          SizedBox(width: 8),
+                          Text(
+                            "Remember me",
+                            style: TextStyle(color: Colors.grey, fontSize: 15),
+                          ),
+                          Spacer(),
+                          TextButton(
+                            onPressed: () {
+                              Get.to(ForgotView());
+                            },
+                            child: Text(
+                              "Forgot Password?",
+                              style: TextStyle(
+                                color: const Color(0xFFFF7622),
+                                fontSize: 15,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    AppButton(
-                      title: "Log in",
-                      callback: () {
-                        print("this is login");
-                      },
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Don't have an account?"),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Sign up",
-                            style: TextStyle(
-                              color: const Color(0xFFFF7622),
-                              fontSize: 15,
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      AppButton(
+                        title: "Log in",
+                        callback: () {
+                          print("this is login");
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Don't have an account?"),
+                          TextButton(
+                            onPressed: () {
+                              Get.to(SignupView());
+                            },
+                            child: Text(
+                              "Sign up",
+                              style: TextStyle(
+                                color: const Color(0xFFFF7622),
+                                fontSize: 15,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Text("Or"),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildSocialButton(color: Color(0xFF395998)),
-                        _buildSocialButton(color: Color(0xFF169CE8)),
-                        _buildSocialButton(color: Color(0xFF1B1F2F)),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Text("Or"),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildSocialButton(color: Color(0xFF395998)),
+                          _buildSocialButton(color: Color(0xFF169CE8)),
+                          _buildSocialButton(color: Color(0xFF1B1F2F)),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

