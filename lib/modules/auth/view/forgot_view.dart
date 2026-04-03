@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 import 'package:store_app/common/app_TextField.dart';
 import 'package:store_app/common/app_button.dart';
 import 'package:store_app/modules/auth/view/verfication_view.dart';
-import 'package:store_app/modules/auth/viewmodel/signup_viewmodel.dart';
+import 'package:store_app/modules/auth/viewmodel/forgot_viewmodel.dart';
 
 class ForgotView extends StatelessWidget {
   ForgotView({super.key});
 
-  SignupViewmodel viewModel = Get.put(SignupViewmodel());
+  ForgotViewmodel viewModel = Get.put(ForgotViewmodel());
 
   @override
   Widget build(BuildContext context) {
@@ -84,17 +84,16 @@ class ForgotView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     AppTextfield(
+                      controller: viewModel.email.value,
                       lableText: "Email",
                       hintText: "jhon@example.com",
                     ),
-
                     SizedBox(height: 20),
-
                     AppButton(
                       title: "Forgot Password",
                       callback: () {
-                        print("this is forgot password");
-                        Get.to(VerficationView());
+                        viewModel.toNavigate();
+                       
                       },
                     ),
                   ],

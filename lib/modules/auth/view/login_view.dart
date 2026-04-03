@@ -5,6 +5,7 @@ import 'package:store_app/common/app_button.dart';
 import 'package:store_app/modules/auth/view/forgot_view.dart';
 import 'package:store_app/modules/auth/view/signup_view.dart';
 import 'package:store_app/modules/auth/viewmodel/login_viewmodel.dart';
+import 'package:store_app/modules/home/view/home_view.dart';
 
 class LoginView extends StatelessWidget {
   LoginView({super.key});
@@ -60,12 +61,16 @@ class LoginView extends StatelessWidget {
                   child: Column(
                     children: [
                       // for Email
-                      AppTextfield(lableText: "Email"),
+                      AppTextfield(
+                        lableText: "Email",
+                        controller: viewModel.email.value,
+                      ),
                       SizedBox(height: 20),
                       // for password
                       AppTextfield(
                         lableText: "Password",
                         textFieldType: AppTextFieldType.password,
+                        controller: viewModel.password.value,
                       ),
                       SizedBox(height: 10),
                       Row(
@@ -127,7 +132,7 @@ class LoginView extends StatelessWidget {
                       AppButton(
                         title: "Log in",
                         callback: () {
-                          print("this is login");
+                          viewModel.toNavigate();
                         },
                       ),
                       SizedBox(height: 20),

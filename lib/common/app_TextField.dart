@@ -6,12 +6,14 @@ class AppTextfield extends StatefulWidget {
   final String? hintText;
   final String? lableText;
   final AppTextFieldType textFieldType;
+  final TextEditingController? controller;
 
   const AppTextfield({
     super.key,
     this.hintText,
     this.lableText,
     this.textFieldType = AppTextFieldType.normal,
+    this.controller,
   });
 
   @override
@@ -30,6 +32,7 @@ class _AppTextfieldState extends State<AppTextfield> {
         Text(widget.lableText ?? "", style: TextStyle(fontSize: 14)),
         SizedBox(height: 10),
         TextFormField(
+          controller: widget.controller,
           obscureText: widget.textFieldType == AppTextFieldType.password
               ? !isVisiblePassword
               : false,

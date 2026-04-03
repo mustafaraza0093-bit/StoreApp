@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_app/common/app_TextField.dart';
 import 'package:store_app/common/app_button.dart';
 import 'package:store_app/modules/auth/view/login_view.dart';
-import 'package:store_app/modules/auth/view/reset_password_view.dart';
-import 'package:store_app/modules/auth/viewmodel/signup_viewmodel.dart';
+import 'package:store_app/modules/auth/view/verfication_view.dart';
 
-class VerficationView extends StatelessWidget {
-  VerficationView({super.key});
-
-  SignupViewmodel viewModel = Get.put(SignupViewmodel());
+class ResetPasswordView extends StatelessWidget {
+  ResetPasswordView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +46,7 @@ class VerficationView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Verification",
+                        "Reset Password",
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -57,7 +55,7 @@ class VerficationView extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Enter your email address and we'll send you a link to verify your account.",
+                        "Enter your email address and we'll send you a link to reset your password.",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.white),
                       ),
@@ -83,31 +81,18 @@ class VerficationView extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Text("CODE"),
-                        Spacer(),
-                        TextButton(onPressed: () {}, child: Text("Resend")),
-                        Text("in.50sec"),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildContainer("1"),
+                    AppTextfield(lableText: "Password"),
 
-                        _buildContainer("2"),
+                    SizedBox(height: 20),
+                    AppTextfield(lableText: "Confirm Password"),
 
-                        _buildContainer("3"),
+                    Spacer(),
 
-                        _buildContainer("4"),
-                      ],
-                    ),
-                    SizedBox(height: 40),
                     AppButton(
-                      title: "Verify Account",
+                      title: "Reset Password",
                       callback: () {
-                        Get.off(ResetPasswordView());
+                        print("this is reset password");
+                        Get.offAll(LoginView());
                       },
                     ),
                   ],
@@ -116,23 +101,6 @@ class VerficationView extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildContainer(String title) {
-    return Container(
-      height: 60,
-      width: 60,
-      decoration: BoxDecoration(
-        color: Color(0xFFEBF5FF),
-        borderRadius: BorderRadius.circular(7),
-      ),
-      child: Center(
-        child: Text(
-          title,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-        ),
       ),
     );
   }
