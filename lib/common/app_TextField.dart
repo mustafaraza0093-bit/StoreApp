@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum AppTextFieldType { normal, email, password }
+enum AppTextFieldType { normal, email, password, search }
 
 class AppTextfield extends StatefulWidget {
   final String? hintText;
@@ -29,8 +29,11 @@ class _AppTextfieldState extends State<AppTextfield> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(widget.lableText ?? "", style: TextStyle(fontSize: 14)),
-        SizedBox(height: 10),
+        if (widget.lableText != null) ...{
+          Text(widget.lableText ?? "", style: TextStyle(fontSize: 14)),
+          SizedBox(height: 10),
+        },
+
         TextFormField(
           controller: widget.controller,
           obscureText: widget.textFieldType == AppTextFieldType.password
@@ -58,6 +61,9 @@ class _AppTextfieldState extends State<AppTextfield> {
                           : Icons.visibility_off,
                     ),
                   )
+                : null,
+            prefixIcon: widget.textFieldType == AppTextFieldType.search
+                ? Icon(Icons.search)
                 : null,
           ),
         ),
