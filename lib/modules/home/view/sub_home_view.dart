@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:store_app/common/app_TextField.dart';
 import 'package:store_app/modules/home/view/components/restaurant_tile.dart';
-import 'package:store_app/modules/home/view/sub_home_view.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+class SubHomeView extends StatelessWidget {
+  const SubHomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,19 +17,14 @@ class HomeView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Get.to(SubHomeView());
-                  },
-                  child: Container(
-                    height: 45,
-                    width: 45,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withValues(alpha: 0.3),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Center(child: Icon(Icons.menu, size: 25)),
+                Container(
+                  height: 45,
+                  width: 45,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(100),
                   ),
+                  child: Center(child: Icon(Icons.menu, size: 25)),
                 ),
                 SizedBox(width: 10),
                 Column(
@@ -138,36 +131,16 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 80,
+                  height: 220,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsets.fromLTRB(16, 10, 0, 10),
                     children: [
-                      _buildCategoryChip(true, "assets/icons/fire.png", "All"),
                       _buildCategoryChip(
-                        false,
-                        "assets/icons/fire.png",
-                        "Burger",
-                      ),
-                      _buildCategoryChip(
-                        false,
-                        "assets/icons/fire.png",
-                        "Pizza",
-                      ),
-                      _buildCategoryChip(
-                        false,
-                        "assets/icons/fire.png",
-                        "Sushi",
-                      ),
-                      _buildCategoryChip(
-                        false,
-                        "assets/icons/fire.png",
-                        "Dessert",
-                      ),
-                      _buildCategoryChip(
-                        false,
-                        "assets/icons/fire.png",
-                        "Drinks",
+                        imagePath: "assets/icons/pizzaimage.png",
+                        title: "Pizza",
+                        subTitle: "Starting",
+                        price: "\$10",
                       ),
                     ],
                   ),
@@ -246,50 +219,60 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryChip(
-    bool isActive,
-    String imagePath,
-    String categoryName,
-  ) {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(100),
-        color: isActive ? Color(0xFFFFD27C) : Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: .2),
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      margin: EdgeInsets.only(right: 15),
-      padding: EdgeInsets.fromLTRB(10, 10, 20, 10),
-      child: Row(
-        children: [
-          Container(
-            height: 40,
-            width: 40,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              // .withValues(alpha: 0.3),
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Image.asset(imagePath, fit: BoxFit.cover),
+  Widget _buildCategoryChip({
+    required String imagePath,
+    required String title,
+    required String subTitle,
+    required String price,
+  }) {
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        Container(
+          width: 150,
+          height: 120,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: .1),
+                blurRadius: 30,
+                offset: Offset(20, 20),
               ),
-            ),
+            ],
           ),
-          SizedBox(width: 13),
-          Text(
-            categoryName,
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+          margin: EdgeInsets.only(right: 0),
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+              Row(
+                children: [
+                  Text(
+                    subTitle,
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                  ),
+                  Spacer(),
+                  Text(
+                    price,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Positioned(
+          top: 30,
+          child: Image.asset(imagePath, height: 110, width: 110),
+        ),
+      ],
     );
   }
 }
