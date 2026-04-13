@@ -238,7 +238,7 @@ class SubHomeView extends StatelessWidget {
               BoxShadow(
                 color: Colors.black.withValues(alpha: .1),
                 blurRadius: 30,
-                offset: Offset(20, 20),
+                offset: Offset(20, 2),
               ),
             ],
           ),
