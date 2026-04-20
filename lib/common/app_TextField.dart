@@ -7,6 +7,7 @@ class AppTextfield extends StatefulWidget {
   final String? lableText;
   final AppTextFieldType textFieldType;
   final TextEditingController? controller;
+  final int? maxLength;
 
   const AppTextfield({
     super.key,
@@ -14,6 +15,7 @@ class AppTextfield extends StatefulWidget {
     this.lableText,
     this.textFieldType = AppTextFieldType.normal,
     this.controller,
+    this.maxLength,
   });
 
   @override
@@ -39,6 +41,7 @@ class _AppTextfieldState extends State<AppTextfield> {
           obscureText: widget.textFieldType == AppTextFieldType.password
               ? !isVisiblePassword
               : false,
+          maxLength: widget.maxLength,
           decoration: InputDecoration(
             hintText: widget.hintText ?? 'Enter your ${widget.lableText ?? ""}',
             border: OutlineInputBorder(
