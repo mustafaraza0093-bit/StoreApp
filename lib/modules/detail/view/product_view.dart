@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_app/common/app_button.dart';
+import 'package:store_app/modules/detail/model/product_model.dart';
 import 'package:store_app/modules/detail/view/add_user_view.dart';
 import 'package:store_app/modules/detail/viewmodel/product_viewmodel.dart';
 
@@ -32,25 +36,27 @@ class Product extends StatelessWidget {
         children: [
           Expanded(
             child: Obx(
-              () => ListView.builder(
-                itemCount: _vm.productList.length,
-                itemBuilder: (context, index) {
-                  var data = _vm.productList[index];
-                  return _buildListTile(
-                    userImage: data.userImage,
-                    userName: data.userName,
-                    fatherName: data.fatherName,
-                    cnic: data.cnic,
-                    phoneNumber: data.phoneNumber,
-                    onDelete: () {
-                      _vm.deleteProduct(data);
-                    },
-                    onEdit: () {
-                      Get.to(AddUserView(userData :data));
-                    },
-                  );
-                },
-              ),
+              () => _vm.productList.isEmpty
+                  ? Center(child: Text("User Data not found"))
+                  : ListView.builder(
+                      itemCount: _vm.productList.length,
+                      itemBuilder: (context, index) {
+                        var data = _vm.productList[index];
+                        return _buildListTile(
+                          userImage: data.userImage,
+                          userName: data.userName,
+                          fatherName: data.fatherName,
+                          cnic: data.cnic,
+                          phoneNumber: data.phoneNumber,
+                          onDelete: () {
+                            conformationAlart(context, data);
+                          },
+                          onEdit: () {
+                            Get.to(AddUserView(userData: data));
+                          },
+                        );
+                      },
+                    ),
             ),
           ),
         ],
@@ -59,7 +65,7 @@ class Product extends StatelessWidget {
   }
 
   Widget _buildListTile({
-    required String userImage,
+    required File userImage,
     required String userName,
     required String fatherName,
     required String cnic,
@@ -97,7 +103,7 @@ class Product extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.network(
+              child: Image.file(
                 userImage,
                 height: 50,
                 width: 50,
@@ -189,71 +195,48 @@ class Product extends StatelessWidget {
     );
   }
 
-  // Widget _buildItemTile({
-  //   required String title,
-  //   required String subtitle,
-  //   required String price,
-  //   required String image,
-  // }) {
-  //   return Stack(
-  //     alignment: Alignment.bottomCenter,
-  //     children: [
-  //       Container(
-  //         height: 150,
-  //         width: double.infinity,
-  //         decoration: BoxDecoration(
-  //           color: Colors.white,
-  //           borderRadius: BorderRadius.circular(20),
-  //           boxShadow: [
-  //             BoxShadow(
-  //               color: Colors.black.withOpacity(0.1),
-  //               blurRadius: 10,
-  //               offset: Offset(5, 10),
-  //             ),
-  //           ],
-  //         ),
-  //         padding: EdgeInsets.all(13),
-  //         margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           mainAxisAlignment: MainAxisAlignment.end,
-  //           children: [
-  //             Text(
-  //               title,
-  //               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-  //             ),
-  //             Text(
-  //               subtitle,
-  //               style: TextStyle(fontSize: 13, color: Colors.grey),
-  //             ),
-  //             Row(
-  //               children: [
-  //                 Text(
-  //                   "\$$price",
-  //                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-  //                 ),
-  //                 Spacer(),
-  //                 Container(
-  //                   height: 30,
-  //                   width: 30,
-  //                   decoration: BoxDecoration(
-  //                     color: Colors.orange,
-  //                     borderRadius: BorderRadius.circular(100),
-  //                   ),
-  //                   child: Icon(Icons.add, color: Colors.white),
-  //                 ),
-  //               ],
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       Positioned(
-  //         top: -5,
-  //         child: image.contains("http")
-  //             ? Image.network(image, height: 100)
-  //             : Image.asset(image, height: 100),
-  //       ),
-  //     ],
-  //   );
-  // }
+  void conformationAlart(BuildContext context, ProductModel data) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Delete User"),
+          content: Text("Are you sure want to delete this user ?"),
+          actions: [
+            Row(
+              children: [
+                Expanded(
+                  child: AppButton(
+                    title: "Cancel",
+                    btnColor: Colors.grey.withValues(alpha: 0.3),
+                    height: 40,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    txtColor: Colors.black.withValues(alpha: 0.7),
+                    callback: () {
+                      Get.back();
+                    },
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: AppButton(
+                    title: "Delete",
+                    btnColor: Colors.red,
+                    height: 40,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    callback: () {
+                      _vm.deleteProduct(data);
+                      
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

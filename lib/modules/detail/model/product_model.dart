@@ -1,9 +1,11 @@
+import 'dart:io';
+
 class ProductModel {
   String userName;
   String fatherName;
   String cnic;
   String phoneNumber;
-  String userImage;
+  File userImage;
 
   ProductModel({
     required this.userName,

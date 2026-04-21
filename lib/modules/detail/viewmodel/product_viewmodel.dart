@@ -1,23 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:store_app/common/app_snakbar.dart';
 import 'package:store_app/modules/detail/model/product_model.dart';
 
 class ProductViewmodel extends GetxController {
-  RxList<ProductModel> productList = <ProductModel>[
-    ProductModel(
-      userImage:
-          "https://i.pinimg.com/736x/05/64/a4/0564a4e380a71e20d32f4e73336654c2.jpg",
-      userName: "Ali Khan",
-      fatherName: "Ahmed Khan",
-      cnic: "35202-1234567-2",
-      phoneNumber: "0301-2345678",
-    ),
-  ].obs;
+  RxList<ProductModel> productList = <ProductModel>[].obs;
 
   // Text Editing Controller
-  Rx<TextEditingController> userImage = TextEditingController().obs;
+  Rx<File> userImageFile = File("").obs;
+  ImagePicker _imagePicker = ImagePicker();
+  // Rx<TextEditingController> userImage = TextEditingController().obs;
   Rx<TextEditingController> userName = TextEditingController().obs;
   Rx<TextEditingController> userFatherName = TextEditingController().obs;
   Rx<TextEditingController> userCNIC = TextEditingController().obs;
@@ -25,14 +21,11 @@ class ProductViewmodel extends GetxController {
 
   void addUser() {
     //-------------------------- Image validation --------------------------
-    if (userImage.value.text.isEmpty) {
-      AppSnakbar.error("Validation Error", "Please add User Image");
+    if (userImageFile.value.path.isEmpty) {
+      AppSnakbar.error("Validation Error", "Please select User Image");
       return;
     }
-    if (!userImage.value.text.contains("http")) {
-      AppSnakbar.error("Validation Error", "Please add valid image url");
-      return;
-    }
+
     //-------------------------- userName validation --------------------------
     if (userName.value.text.isEmpty) {
       AppSnakbar.error("Validation Error", "Please Enter your name");
@@ -84,7 +77,7 @@ class ProductViewmodel extends GetxController {
       fatherName: userFatherName.value.text,
       cnic: userCNIC.value.text,
       phoneNumber: userPhone.value.text,
-      userImage: userImage.value.text,
+      userImage: userImageFile.value,
     );
     productList.insert(0, myData);
     Get.back();
@@ -92,7 +85,7 @@ class ProductViewmodel extends GetxController {
   }
 
   void removeAllData() {
-    userImage.value.clear();
+    userImageFile.value = File("");
     userName.value.clear();
     userFatherName.value.clear();
     userCNIC.value.clear();
@@ -102,6 +95,7 @@ class ProductViewmodel extends GetxController {
   // Delete Product
   void deleteProduct(ProductModel data) {
     productList.remove(data);
+    Get.back();
     AppSnakbar.success("Success", "User Deleted Successfully");
   }
 
@@ -111,12 +105,22 @@ class ProductViewmodel extends GetxController {
     productList[index].fatherName = userFatherName.value.text;
     productList[index].cnic = userCNIC.value.text;
     productList[index].phoneNumber = userPhone.value.text;
-    productList[index].userImage = userImage.value.text;
+    productList[index].userImage = userImageFile.value;
 
     // To update the UI
     productList[index] = productList[index];
 
     Get.back();
     AppSnakbar.success("Success", "User Updated Successfully");
+  }
+
+  void cameraAndPhotoMethod(bool isCamera) async {
+    Get.back();
+    var fileImage = await _imagePicker.pickImage(
+      source: isCamera ? ImageSource.camera : ImageSource.gallery,
+    );
+    if (fileImage != null) {
+      userImageFile.value = File(fileImage.path);
+    }
   }
 }

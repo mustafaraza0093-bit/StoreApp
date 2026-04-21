@@ -22,7 +22,7 @@ class _AddUserViewState extends State<AddUserView> {
     super.initState();
     _vm.removeAllData();
     if (widget.userData != null) {
-      _vm.userImage.value.text = widget.userData!.userImage;
+      _vm.userImageFile.value = widget.userData!.userImage;
       _vm.userName.value.text = widget.userData!.userName;
       _vm.userFatherName.value.text = widget.userData!.fatherName;
       _vm.userCNIC.value.text = widget.userData!.cnic.replaceAll("-", "");
@@ -52,16 +52,37 @@ class _AddUserViewState extends State<AddUserView> {
         ],
         backgroundColor: Colors.white,
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            AppTextfield(
-              controller: _vm.userImage.value,
-              lableText: "User Image",
-              hintText: "Enter your image url",
+            GestureDetector(
+              onTap: () {
+                showImagePickerSheet(context);
+              },
+              child: Obx(
+                () => Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    color: Colors.grey.withValues(alpha: 0.15),
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child: _vm.userImageFile.value.path.isNotEmpty
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image.file(
+                            _vm.userImageFile.value,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : Icon(Icons.person, color: Colors.grey, size: 50),
+                ),
+              ),
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 50),
             AppTextfield(
               controller: _vm.userName.value,
               lableText: "User Name",
@@ -99,6 +120,72 @@ class _AddUserViewState extends State<AddUserView> {
           ],
         ),
       ),
+    );
+  }
+
+  void showImagePickerSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          width: double.infinity,
+          height: 200,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                SizedBox(height: 5),
+                Container(
+                  height: 3,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {
+                    _vm.cameraAndPhotoMethod(true);
+                  },
+                  child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                    ),
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [Text("Camera"), Spacer(), Icon(Icons.camera)],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {
+                    _vm.cameraAndPhotoMethod(false);
+                  },
+                  child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                    ),
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [Text("Gallery"), Spacer(), Icon(Icons.photo)],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
