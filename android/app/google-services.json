@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "229914101126",
+    "project_id": "storeapp-d006e",
+    "storage_bucket": "storeapp-d006e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229914101126:android:b79d158797639fbac09807",
+        "android_client_info": {
+          "package_name": "com.navttc.storeapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4cQeP2S44-__NQHfPcIlUCtEgOIPcQIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

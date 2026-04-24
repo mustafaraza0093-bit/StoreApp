@@ -1,4 +1,4 @@
-package com.example.store_app
+package com.navttc.storeapp
 
 import io.flutter.embedding.android.FlutterActivity
 

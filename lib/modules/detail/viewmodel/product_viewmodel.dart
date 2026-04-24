@@ -6,8 +6,9 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:store_app/common/app_snakbar.dart';
 import 'package:store_app/modules/detail/model/product_model.dart';
+import 'package:store_app/modules/detail/service/detail_service.dart';
 
-class ProductViewmodel extends GetxController {
+class ProductViewmodel extends GetxController with DetailService {
   RxList<ProductModel> productList = <ProductModel>[].obs;
 
   // Text Editing Controller
@@ -19,12 +20,12 @@ class ProductViewmodel extends GetxController {
   Rx<TextEditingController> userCNIC = TextEditingController().obs;
   Rx<TextEditingController> userPhone = TextEditingController().obs;
 
-  void addUser() {
-    //-------------------------- Image validation --------------------------
-    if (userImageFile.value.path.isEmpty) {
-      AppSnakbar.error("Validation Error", "Please select User Image");
-      return;
-    }
+  void addUser() async {
+    // //-------------------------- Image validation --------------------------
+    // if (userImageFile.value.path.isEmpty) {
+    //   AppSnakbar.error("Validation Error", "Please select User Image");
+    //   return;
+    // }
 
     //-------------------------- userName validation --------------------------
     if (userName.value.text.isEmpty) {
@@ -72,14 +73,20 @@ class ProductViewmodel extends GetxController {
     }
 
     // -------------------------- Success Area --------------------------
-    var myData = ProductModel(
-      userName: userName.value.text,
+    // var myData = ProductModel(
+    //   userName: userName.value.text,
+    //   fatherName: userFatherName.value.text,
+    //   cnic: userCNIC.value.text,
+    //   phoneNumber: userPhone.value.text,
+    //   userImage: userImageFile.value,
+    // );
+    await addUserService(
+      fullName: userName.value.text,
       fatherName: userFatherName.value.text,
       cnic: userCNIC.value.text,
-      phoneNumber: userPhone.value.text,
-      userImage: userImageFile.value,
+      phone: userPhone.value.text,
     );
-    productList.insert(0, myData);
+    // productList.insert(0, myData);
     Get.back();
     AppSnakbar.success("Success", "Every Validation Pass");
   }
