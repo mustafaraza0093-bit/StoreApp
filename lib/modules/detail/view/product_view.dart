@@ -8,7 +8,7 @@ import 'package:store_app/modules/detail/view/add_user_view.dart';
 import 'package:store_app/modules/detail/viewmodel/product_viewmodel.dart';
 
 class Product extends StatefulWidget {
-  Product({super.key});
+  const Product({super.key});
 
   @override
   State<Product> createState() => _ProductState();

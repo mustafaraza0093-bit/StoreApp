@@ -59,7 +59,9 @@ class _AppTextfieldState extends State<AppTextfield> {
                 },
               ],
           validator: widget.validator ?? validate,
+
           decoration: InputDecoration(
+            errorMaxLines: 3,
             hintText: widget.hintText ?? 'Enter your ${widget.lableText ?? ""}',
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
@@ -101,10 +103,13 @@ class _AppTextfieldState extends State<AppTextfield> {
     }
 
     if (widget.textFieldType == AppTextFieldType.password) {
+      final passwordRegex = RegExp(
+        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$',
+      ).hasMatch(value ?? '');
       if (value == null || value.isEmpty) {
         return 'Please enter your password';
-      } else if (value.length < 6) {
-        return 'Password must be at least 6 characters long';
+      } else if (!passwordRegex) {
+        return 'Password must include uppercase, lowercase, number, and special character';
       }
     }
 
