@@ -7,10 +7,22 @@ import 'package:store_app/modules/detail/model/product_model.dart';
 import 'package:store_app/modules/detail/view/add_user_view.dart';
 import 'package:store_app/modules/detail/viewmodel/product_viewmodel.dart';
 
-class Product extends StatelessWidget {
+class Product extends StatefulWidget {
   Product({super.key});
 
+  @override
+  State<Product> createState() => _ProductState();
+}
+
+class _ProductState extends State<Product> {
   final ProductViewmodel _vm = Get.put(ProductViewmodel());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _vm.getUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +36,12 @@ class Product extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              Get.to(AddUserView());
+              Get.to(AddUserView())!.then((val) {
+                if (val) {
+                  print("object");
+                  _vm.getUser();
+                }
+              });
             },
             child: Text("Add User"),
           ),
@@ -36,26 +53,33 @@ class Product extends StatelessWidget {
         children: [
           Expanded(
             child: Obx(
-              () => _vm.productList.isEmpty
+              () => _vm.isLoading.value
+                  ? Center(child: CircularProgressIndicator())
+                  : _vm.productList.isEmpty
                   ? Center(child: Text("User Data not found"))
-                  : ListView.builder(
-                      itemCount: _vm.productList.length,
-                      itemBuilder: (context, index) {
-                        var data = _vm.productList[index];
-                        return _buildListTile(
-                          userImage: data.userImage,
-                          userName: data.userName,
-                          fatherName: data.fatherName,
-                          cnic: data.cnic,
-                          phoneNumber: data.phoneNumber,
-                          onDelete: () {
-                            conformationAlart(context, data);
-                          },
-                          onEdit: () {
-                            Get.to(AddUserView(userData: data));
-                          },
-                        );
+                  : RefreshIndicator(
+                      onRefresh: () async {
+                        _vm.getUser();
                       },
+                      child: ListView.builder(
+                        itemCount: _vm.productList.length,
+                        itemBuilder: (context, index) {
+                          var data = _vm.productList[index];
+                          return _buildListTile(
+                            userImage: data.imageUrl,
+                            userName: data.userName,
+                            fatherName: data.fatherName,
+                            cnic: data.cnic,
+                            phoneNumber: data.phoneNumber,
+                            onDelete: () {
+                              conformationAlart(context, data);
+                            },
+                            onEdit: () {
+                              Get.to(AddUserView(userData: data));
+                            },
+                          );
+                        },
+                      ),
                     ),
             ),
           ),
@@ -65,7 +89,7 @@ class Product extends StatelessWidget {
   }
 
   Widget _buildListTile({
-    required File userImage,
+    required String userImage,
     required String userName,
     required String fatherName,
     required String cnic,
@@ -103,11 +127,12 @@ class Product extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.file(
+              child: Image.network(
                 userImage,
-                height: 50,
-                width: 50,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Center(child: Icon(Icons.person));
+                },
               ),
             ),
           ),
@@ -228,7 +253,6 @@ class Product extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     callback: () {
                       _vm.deleteProduct(data);
-                      
                     },
                   ),
                 ),

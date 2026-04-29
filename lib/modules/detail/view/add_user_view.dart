@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:store_app/common/app_TextField.dart';
 import 'package:store_app/common/app_button.dart';
+import 'package:store_app/common/loader.dart';
 import 'package:store_app/modules/detail/model/product_model.dart';
 import 'package:store_app/modules/detail/viewmodel/product_viewmodel.dart';
 
@@ -22,7 +24,7 @@ class _AddUserViewState extends State<AddUserView> {
     super.initState();
     _vm.removeAllData();
     if (widget.userData != null) {
-      _vm.userImageFile.value = widget.userData!.userImage;
+      _vm.imageURL.value = widget.userData!.imageUrl;
       _vm.userName.value.text = widget.userData!.userName;
       _vm.userFatherName.value.text = widget.userData!.fatherName;
       _vm.userCNIC.value.text = widget.userData!.cnic.replaceAll("-", "");
@@ -55,69 +57,88 @@ class _AddUserViewState extends State<AddUserView> {
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                showImagePickerSheet(context);
-              },
-              child: Obx(
-                () => Container(
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: Colors.grey.withValues(alpha: 0.15),
-                    border: Border.all(color: Colors.grey),
+        child: Form(
+          key: _vm.formKey,
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  showImagePickerSheet(context);
+                },
+                child: Obx(
+                  () => Container(
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: Colors.grey.withValues(alpha: 0.15),
+                      border: Border.all(color: Colors.grey),
+                    ),
+                    child: _vm.userImageFile.value.path.isNotEmpty
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Image.file(
+                              _vm.userImageFile.value,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : _vm.imageURL.value.isNotEmpty
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Image.network(
+                              _vm.imageURL.value,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : Icon(Icons.person, color: Colors.grey, size: 50),
                   ),
-                  child: _vm.userImageFile.value.path.isNotEmpty
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Image.file(
-                            _vm.userImageFile.value,
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      : Icon(Icons.person, color: Colors.grey, size: 50),
                 ),
               ),
-            ),
-            SizedBox(height: 50),
-            AppTextfield(
-              controller: _vm.userName.value,
-              lableText: "User Name",
-              hintText: "Enter your username",
-            ),
-            SizedBox(height: 16),
-            AppTextfield(
-              controller: _vm.userFatherName.value,
-              lableText: "Father Name",
-              hintText: "Enter your fathername",
-            ),
-            SizedBox(height: 16),
-            AppTextfield(
-              controller: _vm.userCNIC.value,
-              lableText: "User CNIC",
-              hintText: "Enter your cnic",
-              maxLength: 13,
-            ),
-            SizedBox(height: 16),
-            AppTextfield(
-              controller: _vm.userPhone.value,
-              lableText: "Phone Number",
-              hintText: "Enter your phone number",
-              maxLength: 11,
-            ),
-            SizedBox(height: 30),
-            AppButton(
-              callback: () {
-                widget.userData != null
-                    ? _vm.updateUser(widget.userData!)
-                    : _vm.addUser();
-              },
-              title: widget.userData != null ? "Update" : "Done",
-            ),
-          ],
+              SizedBox(height: 50),
+              AppTextfield(
+                controller: _vm.userName.value,
+                lableText: "User Name",
+                hintText: "Enter your username",
+              ),
+              SizedBox(height: 16),
+              AppTextfield(
+                controller: _vm.userFatherName.value,
+                lableText: "Father Name",
+                hintText: "Enter your fathername",
+              ),
+              SizedBox(height: 16),
+              AppTextfield(
+                controller: _vm.userCNIC.value,
+                lableText: "User CNIC",
+                hintText: "Enter your cnic",
+                maxLength: 13,
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              ),
+              SizedBox(height: 16),
+              AppTextfield(
+                controller: _vm.userPhone.value,
+                lableText: "Phone Number",
+                hintText: "Enter your phone number",
+                maxLength: 11,
+                keyboardType: TextInputType.number,
+                inputFormatters:
+                    // Digits only and Alway start with 03
+                    [FilteringTextInputFormatter.digitsOnly],
+              ),
+              SizedBox(height: 30),
+              AppButton(
+                callback: () {
+                  if (_vm.formKey.currentState!.validate()) {
+                    widget.userData != null
+                        ? _vm.updateUser(widget.userData!)
+                        : _vm.addUser();
+                  }
+                },
+                title: widget.userData != null ? "Update" : "Done",
+              ),
+            ],
+          ),
         ),
       ),
     );

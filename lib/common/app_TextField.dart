@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 enum AppTextFieldType { normal, email, password, search }
 
@@ -8,6 +10,9 @@ class AppTextfield extends StatefulWidget {
   final AppTextFieldType textFieldType;
   final TextEditingController? controller;
   final int? maxLength;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  final String? Function(String?)? validator;
 
   const AppTextfield({
     super.key,
@@ -16,6 +21,9 @@ class AppTextfield extends StatefulWidget {
     this.textFieldType = AppTextFieldType.normal,
     this.controller,
     this.maxLength,
+    this.keyboardType,
+    this.inputFormatters,
+    this.validator,
   });
 
   @override
@@ -42,6 +50,15 @@ class _AppTextfieldState extends State<AppTextfield> {
               ? !isVisiblePassword
               : false,
           maxLength: widget.maxLength,
+          keyboardType: widget.keyboardType,
+          inputFormatters:
+              widget.inputFormatters ??
+              [
+                if (widget.textFieldType == AppTextFieldType.email) ...{
+                  FilteringTextInputFormatter.deny(RegExp(r"\s")),
+                },
+              ],
+          validator: widget.validator ?? validate,
           decoration: InputDecoration(
             hintText: widget.hintText ?? 'Enter your ${widget.lableText ?? ""}',
             border: OutlineInputBorder(
@@ -72,5 +89,31 @@ class _AppTextfieldState extends State<AppTextfield> {
         ),
       ],
     );
+  }
+
+  String? validate(String? value) {
+    if (widget.textFieldType == AppTextFieldType.email) {
+      if (value == null || value.isEmpty) {
+        return 'Please enter your email';
+      } else if (!GetUtils.isEmail(value)) {
+        return 'Please enter a valid email';
+      }
+    }
+
+    if (widget.textFieldType == AppTextFieldType.password) {
+      if (value == null || value.isEmpty) {
+        return 'Please enter your password';
+      } else if (value.length < 6) {
+        return 'Password must be at least 6 characters long';
+      }
+    }
+
+    if (widget.textFieldType == AppTextFieldType.normal) {
+      if (value == null || value.isEmpty) {
+        return 'Please enter your ${widget.lableText ?? "value"}';
+      }
+    }
+
+    return null;
   }
 }
