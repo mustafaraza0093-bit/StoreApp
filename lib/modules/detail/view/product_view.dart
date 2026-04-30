@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store_app/common/app_button.dart';
+import 'package:store_app/common/app_prefs.dart';
+import 'package:store_app/modules/auth/view/login_view.dart';
 import 'package:store_app/modules/detail/model/product_model.dart';
 import 'package:store_app/modules/detail/view/add_user_view.dart';
 import 'package:store_app/modules/detail/viewmodel/product_viewmodel.dart';
@@ -32,6 +34,13 @@ class _ProductState extends State<Product> {
           style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
         ),
         actions: [
+          IconButton(
+            onPressed: () {
+              AppPrefs.clear();
+              Get.offAll(() => LoginView());
+            },
+            icon: Icon(Icons.logout, color: Colors.red),
+          ),
           TextButton(
             onPressed: () {
               Get.to(AddUserView())!.then((val) {
@@ -44,7 +53,6 @@ class _ProductState extends State<Product> {
             child: Text("Add User"),
           ),
         ],
-
         backgroundColor: Colors.white,
       ),
       body: Column(

@@ -1,7 +1,9 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_app/common/app_prefs.dart';
 import 'package:store_app/common/loader.dart';
 import 'package:store_app/modules/auth/service/auth_service.dart';
 import 'package:store_app/modules/detail/view/product_view.dart';
@@ -34,42 +36,48 @@ class LoginViewmodel extends GetxController with AuthService {
     AppLoader.show(Get.context!);
 
     try {
+      UserCredential? credential;
       switch (loginType.value) {
         case LoginType.email:
-          await signInWithEmail(
+          credential = await signInWithEmail(
             email.value.text.trim(),
             password.value.text.trim(),
           );
-          _navigateForward();
+          if (credential != null) _navigateForward(credential.user?.uid);
           break;
 
         case LoginType.phone:
           if (isOtpSent.value) {
             // Step 2: Verify the code
-            await verifyPhoneOtp(
+            credential = await verifyPhoneOtp(
               verificationId.value,
               otpController.value.text.trim(),
             );
-            _navigateForward();
+            if (credential != null) _navigateForward(credential.user?.uid);
           } else {
             // Step 1: Send the code
             await sendPhoneOtp(email.value.text.trim(), (vid) {
               verificationId.value = vid;
               isOtpSent.value = true;
               AppLoader.hide();
-              Get.snackbar("OTP Sent", "Please check your messages");
+              Get.snackbar(
+                "OTP Sent",
+                "Please check your messages",
+                backgroundColor: Colors.green,
+                colorText: Colors.white,
+              );
             });
           }
           break;
 
         case LoginType.google:
-          final user = await signInWithGoogle();
-          if (user != null) _navigateForward();
+          credential = await signInWithGoogle();
+          if (credential != null) _navigateForward(credential.user?.uid);
           break;
 
         case LoginType.guest:
-          await signInAsGuest();
-          _navigateForward();
+          credential = await signInAsGuest();
+          if (credential != null) _navigateForward(credential.user?.uid);
           break;
       }
     } catch (e) {
@@ -85,7 +93,12 @@ class LoginViewmodel extends GetxController with AuthService {
     }
   }
 
-  void _navigateForward() {
+  void _navigateForward(String? uid) {
+    AppPrefs.setLoggedIn(true);
+    AppPrefs.setUserEmail(email.value.text.trim());
+    if (uid != null) AppPrefs.setUserUID(uid);
     Get.offAll(() => Product());
   }
+
 }
+

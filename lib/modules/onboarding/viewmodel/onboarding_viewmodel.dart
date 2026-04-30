@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_app/common/app_prefs.dart';
 import 'package:store_app/modules/auth/view/login_view.dart';
+
 
 class OnboardingViewModel extends GetxController {
   final PageController pageController = PageController();
@@ -37,13 +39,19 @@ class OnboardingViewModel extends GetxController {
         curve: Curves.ease,
       );
     } else {
-      Get.to(LoginView());
+      _completeOnboarding();
     }
   }
 
   void skip() {
-    Get.to(LoginView());
+    _completeOnboarding();
   }
+
+  void _completeOnboarding() {
+    AppPrefs.setFirstTime(false);
+    Get.offAll(() => LoginView());
+  }
+
 
   @override
   void onClose() {

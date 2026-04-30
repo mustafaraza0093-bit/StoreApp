@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_app/common/app_prefs.dart';
 import 'package:store_app/common/loader.dart';
 import 'package:store_app/modules/auth/service/auth_service.dart';
 
@@ -34,21 +36,22 @@ class SignupViewmodel extends GetxController with AuthService {
     AppLoader.show(Get.context!);
 
     try {
+      UserCredential? credential;
       if (signupType.value == SignupType.email) {
-        await signUpWithEmail(
+        credential = await signUpWithEmail(
           email.value.text.trim(),
           password.value.text.trim(),
         );
-        _navigateForward();
+        if (credential != null) _navigateForward(credential.user?.uid);
       } else {
         // Phone Signup
         if (isOtpSent.value) {
           // Step 2: Verify OTP
-          await verifyPhoneOtp(
+          credential = await verifyPhoneOtp(
             verificationId.value,
             otpController.value.text.trim(),
           );
-          _navigateForward();
+          if (credential != null) _navigateForward(credential.user?.uid);
         } else {
           // Step 1: Send OTP
           await sendPhoneOtp(phone.value.text.trim(), (vid) {
@@ -76,7 +79,16 @@ class SignupViewmodel extends GetxController with AuthService {
     }
   }
 
-  void _navigateForward() {
+  void _navigateForward(String? uid) {
+    AppPrefs.setLoggedIn(true);
+    AppPrefs.setUserEmail(
+      signupType.value == SignupType.email
+          ? email.value.text.trim()
+          : phone.value.text.trim(),
+    );
+    if (uid != null) AppPrefs.setUserUID(uid);
     Get.offAll(() => Product());
   }
 }
+
+

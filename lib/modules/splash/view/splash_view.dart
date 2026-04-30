@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_app/common/app_prefs.dart';
+import 'package:store_app/modules/auth/view/login_view.dart';
+import 'package:store_app/modules/detail/view/product_view.dart';
 import 'package:store_app/modules/onboarding/view/onboarding_view.dart';
 
 class SplashView extends StatefulWidget {
@@ -12,13 +15,18 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.delayed(Duration(seconds: 2), () {
-      print("hello print");
-      Get.to(OnboardingView());
+      if (AppPrefs.isFirstTime()) {
+        Get.offAll(() => OnboardingView());
+      } else if (AppPrefs.isLoggedIn()) {
+        Get.offAll(() => Product());
+      } else {
+        Get.offAll(() => LoginView());
+      }
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
