@@ -79,36 +79,127 @@ class SignupView extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      AppTextfield(lableText: "Name", hintText: "jhon"),
-                      SizedBox(height: 20),
-                      AppTextfield(
-                        lableText: "Email",
-                        hintText: "jhon@example.com",
+                  child: Form(
+                    key: viewModel.formKey,
+                    child: Obx(
+                      () => Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _buildSocialButton(
+                                  isSelected:
+                                      viewModel.signupType.value ==
+                                      SignupType.email,
+                                  bgColor: Color(0xFF169CE8), // Email blue
+                                  title: "Email",
+                                  onTap: () {
+                                    viewModel.signupType.value =
+                                        SignupType.email;
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: 15),
+                              Expanded(
+                                child: _buildSocialButton(
+                                  isSelected:
+                                      viewModel.signupType.value ==
+                                      SignupType.phone,
+                                  bgColor: Color(0xFF25D366), // Phone green
+                                  title: "Phone",
+                                  onTap: () {
+                                    viewModel.signupType.value =
+                                        SignupType.phone;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 30),
+                          AppTextfield(
+                            lableText: "Name",
+                            hintText: "jhon",
+                            controller: viewModel.name.value,
+                          ),
+                          SizedBox(height: 20),
+                          if (viewModel.signupType.value == SignupType.email)
+                            AppTextfield(
+                              lableText: "Email",
+                              hintText: "jhon@example.com",
+                              controller: viewModel.email.value,
+                              textFieldType: AppTextFieldType.email,
+                            )
+                          else ...[
+                            AppTextfield(
+                              lableText: "Phone",
+                              hintText: "+92 312 3456789",
+                              controller: viewModel.phone.value,
+                              keyboardType: TextInputType.phone,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your phone number';
+                                }
+                                if (value.length < 10) {
+                                  return 'Please enter a valid phone number';
+                                }
+                                return null;
+                              },
+                            ),
+                            if (viewModel.isOtpSent.value) ...[
+                              SizedBox(height: 20),
+                              AppTextfield(
+                                lableText: "OTP Code",
+                                hintText: "123456",
+                                controller: viewModel.otpController.value,
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter the OTP code';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ],
+                          ],
+
+                          if (viewModel.signupType.value ==
+                              SignupType.email) ...[
+                            SizedBox(height: 20),
+                            // for password
+                            AppTextfield(
+                              lableText: "Password",
+                              hintText: "**********",
+                              textFieldType: AppTextFieldType.password,
+                              controller: viewModel.password.value,
+                            ),
+                            SizedBox(height: 20),
+                            // for retype password
+                            AppTextfield(
+                              lableText: "Retype Password",
+                              hintText: "**********",
+                              textFieldType: AppTextFieldType.password,
+                              controller: viewModel.retypePassword.value,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please retype your password';
+                                }
+                                if (value != viewModel.password.value.text) {
+                                  return 'Passwords do not match';
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                          SizedBox(height: 30),
+                          AppButton(
+                            title: "Sign up",
+                            callback: () {
+                              viewModel.performSignup();
+                            },
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 20),
-                      // for password
-                      AppTextfield(
-                        lableText: "Password",
-                        hintText: "**********",
-                        textFieldType: AppTextFieldType.password,
-                      ),
-                      SizedBox(height: 20),
-                      // for password
-                      AppTextfield(
-                        lableText: "Retype Password",
-                        hintText: "**********",
-                        textFieldType: AppTextFieldType.password,
-                      ),
-                      SizedBox(height: 20),
-                      AppButton(
-                        title: "Sign up",
-                        callback: () {
-                          print("this is signup");
-                        },
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -119,13 +210,34 @@ class SignupView extends StatelessWidget {
     );
   }
 
-  Widget _buildSocialButton({required Color color}) {
-    return Container(
-      height: 60,
-      width: 60,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(100),
+  Widget _buildSocialButton({
+    required Color bgColor,
+    required String title,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 55,
+        decoration: BoxDecoration(
+          color: bgColor.withValues(alpha: isSelected ? 1.0 : 0.35),
+          borderRadius: BorderRadius.circular(100),
+          border: Border.all(
+            color: isSelected ? bgColor : Colors.transparent,
+            width: 2,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            title,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
     );
   }

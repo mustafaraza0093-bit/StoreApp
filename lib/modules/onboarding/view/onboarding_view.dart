@@ -7,7 +7,6 @@ class OnboardingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // OnboardingViewModel vm = OnboardingViewModel();
     OnboardingViewModel viewModel = Get.put(OnboardingViewModel());
 
     return Scaffold(

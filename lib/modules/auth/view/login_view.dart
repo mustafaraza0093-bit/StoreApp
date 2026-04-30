@@ -80,7 +80,17 @@ class LoginView extends StatelessWidget {
                               lableText: "Phone",
                               controller: viewModel.email.value,
                             ),
-
+                            SizedBox(height: 20),
+                            // for password
+                            Visibility(
+                              visible: viewModel.isOtpSent.value,
+                              child: AppTextfield(
+                                lableText: "OTP Code",
+                                textFieldType: AppTextFieldType.normal,
+                                controller: viewModel.otpController.value,
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
                             SizedBox(height: 10),
                           ],
 
@@ -146,7 +156,7 @@ class LoginView extends StatelessWidget {
                           AppButton(
                             title: "Log in",
                             callback: () {
-                              viewModel.toNavigate();
+                              viewModel.performLogin();
                             },
                           ),
                           Row(
@@ -252,12 +262,14 @@ class LoginView extends StatelessWidget {
       onTap: () {
         if (title == "Google") {
           viewModel.loginType.value = LoginType.google;
+          viewModel.performLogin();
         } else if (title == "Phone") {
           viewModel.loginType.value = LoginType.phone;
         } else if (title == "Email") {
           viewModel.loginType.value = LoginType.email;
         } else if (title == "Guest") {
           viewModel.loginType.value = LoginType.guest;
+          viewModel.performLogin();
         }
       },
       child: Container(

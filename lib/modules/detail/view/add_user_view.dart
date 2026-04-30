@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:store_app/common/app_TextField.dart';
 import 'package:store_app/common/app_button.dart';
-import 'package:store_app/common/loader.dart';
 import 'package:store_app/modules/detail/model/product_model.dart';
 import 'package:store_app/modules/detail/viewmodel/product_viewmodel.dart';
 
